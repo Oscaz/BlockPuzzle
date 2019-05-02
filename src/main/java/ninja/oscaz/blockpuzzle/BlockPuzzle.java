@@ -2,7 +2,10 @@ package ninja.oscaz.blockpuzzle;
 
 import lombok.Getter;
 import lombok.Setter;
+import ninja.oscaz.blockpuzzle.error.GameError;
 import ninja.oscaz.blockpuzzle.input.key.KeyHandler;
+import ninja.oscaz.blockpuzzle.listener.ClickEventListener;
+import ninja.oscaz.blockpuzzle.listener.KeyEventListener;
 import ninja.oscaz.blockpuzzle.menu.MenuState;
 import ninja.oscaz.blockpuzzle.input.click.ClickHandler;
 import processing.core.PApplet;
@@ -11,9 +14,7 @@ import processing.event.KeyEvent;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class BlockPuzzle extends PApplet {
@@ -24,18 +25,13 @@ public class BlockPuzzle extends PApplet {
 
     public BlockPuzzle() {
         instance = this;
-        try {
-            System.out.println(this.frameRate);
-            this.frameRate(20);
-            System.out.println(this.frameRate);
-        } catch (Exception e) {
-            // ignored
-        }
-        System.out.println(this.frameRate);
     }
 
     @Getter @Setter
     private MenuState menuState;
+
+    @Getter @Setter
+    private boolean errorHalt = false;
 
     public void settings() {
         this.menuState = MenuState.MAIN.init();
@@ -43,44 +39,16 @@ public class BlockPuzzle extends PApplet {
     }
 
     public void draw() {
-//        if (this.keyPressed) menuState.getMenu().handleKeyPress();
+        if (errorHalt) {
+            GameError.drawError();
+            return;
+        }
         this.menuState.getMenu().drawMenu();
     }
 
     public void switchMenu(MenuState menuState) {
         this.menuState = menuState;
     }
-
-    private boolean isMousePressed = false;
-
-    @Override
-    public void mousePressed() {
-        if (this.isMousePressed) return;
-        ClickHandler.getInstance().callClick();
-        this.isMousePressed = true;
-    }
-
-    @Override
-    public void mouseReleased() {
-        this.isMousePressed = false;
-    }
-
-    private List<Character> pressedKeys = new ArrayList<>();
-
-    @Override
-    public void keyPressed(KeyEvent event) {
-        if (this.pressedKeys.contains(event.getKey())) return;
-        KeyHandler.getInstance().callKey(event.getKey());
-        this.pressedKeys.add(event.getKey());
-    }
-
-    @Override
-    public void keyReleased(KeyEvent event) {
-        if (this.pressedKeys.contains(event.getKey())) {
-            this.pressedKeys.remove((Character) event.getKey());
-        }
-    }
-
 
     private final Map<String, BufferedImage> storedImages = new HashMap<>();
 
@@ -95,6 +63,33 @@ public class BlockPuzzle extends PApplet {
             }
         } else return this.storedImages.get(name);
         throw new IllegalStateException("Illegal state reached");
+    }
+
+    @Override
+    public void mousePressed() {
+        if (this.isErrorHalt()) return;
+        ClickEventListener.getInstance().fireClick();
+    }
+
+    @Override
+    public void mouseReleased() {
+        if (this.isErrorHalt()) {
+            GameError.mouseReleased();
+            return;
+        }
+        ClickEventListener.getInstance().endClick();
+    }
+
+    @Override
+    public void keyPressed(KeyEvent event) {
+        if (this.isErrorHalt()) return;
+        KeyEventListener.getInstance().fireKey(event);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent event) {
+        if (this.isErrorHalt()) return;
+        KeyEventListener.getInstance().endKey(event);
     }
 
     public static void main(String[] args) {

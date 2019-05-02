@@ -1,6 +1,7 @@
 package ninja.oscaz.blockpuzzle.menu;
 
 import ninja.oscaz.blockpuzzle.BlockPuzzle;
+import ninja.oscaz.blockpuzzle.error.GameError;
 import ninja.oscaz.blockpuzzle.input.click.ClickHandler;
 import ninja.oscaz.blockpuzzle.input.key.KeyHandler;
 import processing.core.PImage;
@@ -30,6 +31,8 @@ public class MainMenu extends Menu {
         }
     }
 
+    boolean foo = true;
+
     @Override
     public void drawMenu() {
         BlockPuzzle.getInstance().background(80.0f);
@@ -42,6 +45,11 @@ public class MainMenu extends Menu {
         BlockPuzzle.getInstance().image(
                 new PImage(BlockPuzzle.getInstance().getResourceImage("LevelEditorButton")), 360, 400, 200, 100
         );
+        if (foo) {
+            GameError.displayGameError("Main menu error test!");
+            GameError.displayGameError("Extra main menu error test!");
+            foo = false;
+        }
     }
 
     public void selectButtonClicked() {
