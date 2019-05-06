@@ -4,12 +4,12 @@ import ninja.oscaz.blockpuzzle.BlockPuzzle;
 import processing.core.PImage;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class GameError {
 
-    private static final List<String> queuedErrors = new ArrayList<>();
+    private static final Queue<String> queuedErrors = new ConcurrentLinkedDeque<>();
 
     public static void displayGameError(String message) {
         queuedErrors.add(message);
@@ -17,7 +17,7 @@ public class GameError {
     }
 
     public static void drawError() {
-        displayErrorBox(queuedErrors.get(0));
+        displayErrorBox(queuedErrors.poll());
     }
 
     public static void mouseReleased() {
@@ -25,7 +25,6 @@ public class GameError {
         if (!(BlockPuzzle.getInstance().mouseX <= 340)) return;
         if (!(BlockPuzzle.getInstance().mouseY >= 360)) return;
         if (!(BlockPuzzle.getInstance().mouseY <= 380)) return;
-        queuedErrors.remove(0);
         if (!(queuedErrors.size() > 0)) BlockPuzzle.getInstance().setErrorHalt(false);
     }
 

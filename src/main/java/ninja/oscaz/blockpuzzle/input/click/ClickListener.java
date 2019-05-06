@@ -1,6 +1,7 @@
 package ninja.oscaz.blockpuzzle.input.click;
 
 import lombok.Getter;
+import lombok.Setter;
 import ninja.oscaz.blockpuzzle.menu.MenuState;
 
 import java.lang.reflect.Method;
@@ -14,6 +15,8 @@ public class ClickListener {
     private final int xBound;
     private final int yBound;
     private final Method method;
+
+    @Setter private Object parameter = null;
 
     public ClickListener(MenuState menuState, int x, int y, int xBound, int yBound, Method method) {
         this.menuState = menuState;

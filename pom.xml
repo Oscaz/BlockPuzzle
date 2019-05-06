@@ -61,13 +61,8 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
-                <filtering>true</filtering>
                 <includes>
-                    <include>*.png</include>
-                    <include>*.jpg</include>
-                    <include>*.jpeg</include>
-                    <include>*.gif</include>
-                    <include>*.yml</include>
+                    <include>**</include>
                 </includes>
             </resource>
         </resources>

@@ -1,0 +1,5 @@
+foothin
+$0|0|IMMOVABLE
+$0|1|IMMOVABLE
+$0|2|GOAL
+$3|3|MOVABLE

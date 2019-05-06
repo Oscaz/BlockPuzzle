@@ -3,18 +3,20 @@ package ninja.oscaz.blockpuzzle;
 import lombok.Getter;
 import lombok.Setter;
 import ninja.oscaz.blockpuzzle.error.GameError;
-import ninja.oscaz.blockpuzzle.input.key.KeyHandler;
+import ninja.oscaz.blockpuzzle.level.Level;
+import ninja.oscaz.blockpuzzle.level.LevelLoader;
 import ninja.oscaz.blockpuzzle.listener.ClickEventListener;
 import ninja.oscaz.blockpuzzle.listener.KeyEventListener;
 import ninja.oscaz.blockpuzzle.menu.MenuState;
-import ninja.oscaz.blockpuzzle.input.click.ClickHandler;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BlockPuzzle extends PApplet {
@@ -30,11 +32,17 @@ public class BlockPuzzle extends PApplet {
     @Getter @Setter
     private MenuState menuState;
 
+    @Getter
+    public List<Level> levels;
+
     @Getter @Setter
     private boolean errorHalt = false;
 
     public void settings() {
         this.menuState = MenuState.MAIN.init();
+        this.levels = new ArrayList<>();
+        System.out.println(this.getClass().getClassLoader().getResourceAsStream("levels/1.txt"));
+        LevelLoader.loadLevel(this.getClass().getClassLoader().getResourceAsStream("levels/1.txt"));
         this.size(640,640);
     }
 
@@ -48,6 +56,7 @@ public class BlockPuzzle extends PApplet {
 
     public void switchMenu(MenuState menuState) {
         this.menuState = menuState;
+        this.menuState.getMenu().drawInit();
     }
 
     private final Map<String, BufferedImage> storedImages = new HashMap<>();
@@ -59,7 +68,7 @@ public class BlockPuzzle extends PApplet {
                 this.storedImages.put(name, image);
                 return image;
             } catch (IOException e) {
-                e.printStackTrace();
+                GameError.displayGameError("Fatal error: Error loading resource image, restart your game.");
             }
         } else return this.storedImages.get(name);
         throw new IllegalStateException("Illegal state reached");

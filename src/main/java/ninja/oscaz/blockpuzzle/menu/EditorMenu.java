@@ -7,6 +7,11 @@ public class EditorMenu extends Menu {
     }
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     public void drawMenu() {
 
     }

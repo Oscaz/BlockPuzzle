@@ -15,4 +15,9 @@ public class Block {
         this.y = y;
     }
 
+    @Override
+    public String toString() {
+        return this.blockType.toString() + "|" + x + "|" + y;
+    }
+
 }

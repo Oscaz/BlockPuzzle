@@ -14,7 +14,11 @@ public abstract class Menu {
 
     }
 
-    public void kill() {
+    public void drawInit() {
+
+    }
+
+    public void drawKill() {
 
     }
 

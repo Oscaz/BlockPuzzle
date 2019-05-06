@@ -32,6 +32,26 @@ public class KeyHandler {
         this.registeredListeners.add(keyListener);
     }
 
+    public void deregisterListener(MenuState menuState, List<Character> characters, Method method) {
+        this.registeredListeners.remove(new KeyListener(menuState, characters, method));
+    }
+
+    public void deregisterListener(MenuState menuState, Character character, Method method) {
+        this.registeredListeners.remove(new KeyListener(menuState, character, method));
+    }
+
+    public void deregisterListener(MenuState menuState) {
+        this.registeredListeners.forEach(listener -> {
+            if (listener.getMenuState() == menuState) {
+                registeredListeners.remove(listener);
+            }
+        });
+    }
+
+    public void deregisterListener(KeyListener keyListener) {
+        this.registeredListeners.remove(keyListener);
+    }
+
     public void callKey(Character keyPressed) {
         this.registeredListeners.forEach(listener -> {
             if (!(BlockPuzzle.getInstance().getMenuState() == listener.getMenuState())) return;

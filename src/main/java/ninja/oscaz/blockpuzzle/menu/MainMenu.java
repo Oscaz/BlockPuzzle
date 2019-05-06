@@ -3,10 +3,7 @@ package ninja.oscaz.blockpuzzle.menu;
 import ninja.oscaz.blockpuzzle.BlockPuzzle;
 import ninja.oscaz.blockpuzzle.error.GameError;
 import ninja.oscaz.blockpuzzle.input.click.ClickHandler;
-import ninja.oscaz.blockpuzzle.input.key.KeyHandler;
 import processing.core.PImage;
-
-import java.util.Arrays;
 
 public class MainMenu extends Menu {
 
@@ -23,15 +20,10 @@ public class MainMenu extends Menu {
             ClickHandler.getInstance().registerListener(
                     this.getMenuState(), 360, 400, 560, 500, this.getClass().getMethod("editorButtonClicked")
             );
-            KeyHandler.getInstance().registerListener(
-                    this.getMenuState(), Arrays.asList('b', 'c'), this.getClass().getMethod("characterClicked", Character.class)
-            );
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
     }
-
-    boolean foo = true;
 
     @Override
     public void drawMenu() {
@@ -45,11 +37,6 @@ public class MainMenu extends Menu {
         BlockPuzzle.getInstance().image(
                 new PImage(BlockPuzzle.getInstance().getResourceImage("LevelEditorButton")), 360, 400, 200, 100
         );
-        if (foo) {
-            GameError.displayGameError("Main menu error test!");
-            GameError.displayGameError("Extra main menu error test!");
-            foo = false;
-        }
     }
 
     public void selectButtonClicked() {
@@ -60,7 +47,4 @@ public class MainMenu extends Menu {
         BlockPuzzle.getInstance().switchMenu(MenuState.EDITORSELECT);
     }
 
-    public void characterClicked(Character key) {
-        System.out.println("key clicked! " + key);
-    }
 }
