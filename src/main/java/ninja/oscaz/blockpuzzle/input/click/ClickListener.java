@@ -27,4 +27,9 @@ public class ClickListener {
         this.method = method;
     }
 
+    @Override
+    public String toString() {
+        return menuState + "|" + x + "|" + y + "|" + xBound + "|" + yBound + "|" + method.getName();
+    }
+
 }

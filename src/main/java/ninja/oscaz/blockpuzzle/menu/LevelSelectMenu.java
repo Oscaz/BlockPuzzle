@@ -38,9 +38,10 @@ public class LevelSelectMenu extends Menu {
             ClickListener clickListener;
             try {
                 clickListener = new ClickListener(
-                        MenuState.INGAME, 40 + (x * 160), 40 + (y * 160), 160 + (x * 160), 160 + (y * 160),
-                        this.getClass().getMethod("selectLevel", Level.class)
+                        MenuState.LEVELSELECT, 40 + (x * 160), 40 + (y * 160), 160 + (x * 160), 160 + (y * 160),
+                        this.getClass().getMethod("selectLevel", GameLevel.class)
                 );
+                System.out.println(clickListener);
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
@@ -56,7 +57,7 @@ public class LevelSelectMenu extends Menu {
 
     @Override
     public void drawMenu() {
-        BlockPuzzle.getInstance().background(80.0f);
+        BlockPuzzle.getInstance().background(210.0f);
         int x = 0, y = 0;
         for (Level level : BlockPuzzle.getInstance().getLevels()) {
             BlockPuzzle.getInstance().fill(Color.LIGHT_GRAY.getRGB());
@@ -75,10 +76,10 @@ public class LevelSelectMenu extends Menu {
         BlockPuzzle.getInstance().switchMenu(MenuState.MAIN);
     }
 
-    public void selectLevel(Level level) {
+    public void selectLevel(GameLevel level) {
         System.out.println("select level called");
         GameMenu gameMenu = (GameMenu) MenuState.INGAME.getMenu();
-        gameMenu.setCurrentLevel(new GameLevel(level));
+        gameMenu.setCurrentLevel(level);
         BlockPuzzle.getInstance().switchMenu(MenuState.INGAME);
     }
 }

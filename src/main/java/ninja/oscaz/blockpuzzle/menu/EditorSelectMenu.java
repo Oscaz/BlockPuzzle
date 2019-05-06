@@ -10,6 +10,6 @@ public class EditorSelectMenu extends Menu {
 
     @Override
     public void drawMenu() {
-        BlockPuzzle.getInstance().background(80.0f);
+        BlockPuzzle.getInstance().background(210.0f);
     }
 }

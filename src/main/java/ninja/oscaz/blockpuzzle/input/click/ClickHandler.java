@@ -22,27 +22,16 @@ public class ClickHandler {
 
     public void callClick() {
         this.registeredListeners.forEach(listener -> {
-            System.out.println(1);
             if (!(BlockPuzzle.getInstance().getMenuState() == listener.getMenuState())) return;
-            System.out.println(2);
             if (!(BlockPuzzle.getInstance().mouseX > listener.getX())) return;
-            System.out.println(3);
             if (!(BlockPuzzle.getInstance().mouseX < listener.getXBound())) return;
-            System.out.println(4);
             if (!(BlockPuzzle.getInstance().mouseY > listener.getY())) return;
-            System.out.println(5);
             if (!(BlockPuzzle.getInstance().mouseY < listener.getYBound())) return;
-            System.out.println(6);
             try {
-                System.out.println(7);
                 if (listener.getParameter() == null) {
-                    System.out.println(8);
                     listener.getMethod().invoke(listener.getMenuState().getMenu());
-                    System.out.println(9);
                 } else {
-                    System.out.println(10);
                     listener.getMethod().invoke(listener.getMenuState().getMenu(), listener.getParameter());
-                    System.out.println(11);
                 }
             } catch (ReflectiveOperationException e) {
                 throw new RuntimeException(e);

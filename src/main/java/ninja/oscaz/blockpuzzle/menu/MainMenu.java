@@ -27,7 +27,7 @@ public class MainMenu extends Menu {
 
     @Override
     public void drawMenu() {
-        BlockPuzzle.getInstance().background(80.0f);
+        BlockPuzzle.getInstance().background(210.0f);
         BlockPuzzle.getInstance().image(
                 new PImage(BlockPuzzle.getInstance().getResourceImage("MainLogo")), 120, 120, 400, 33
         );

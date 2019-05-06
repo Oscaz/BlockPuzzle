@@ -27,9 +27,7 @@ public class LevelLoader {
 
     public static void loadLevel(List<String> lines) {
         String name = lines.get(0);
-        System.out.println(name);
         lines.remove(0);
-        lines.forEach(System.out::println);
         List<Block> blocks = new ArrayList<>();
         lines.forEach(line -> {
             try {
@@ -45,7 +43,6 @@ public class LevelLoader {
                 }
                 blocks.add(new Block(BlockType.valueOf(splitLine[2]) , x, y));
             } catch (Exception e) {
-                System.out.println("exception caught in levelloader");
                 e.printStackTrace();
             }
         });
@@ -55,17 +52,12 @@ public class LevelLoader {
     public static void loadLevel(InputStream inputStream) {
         try {
             String string = LevelLoader.convert(inputStream, Charset.defaultCharset());
-            System.out.println(string);
             if (string == null) {
-                System.out.println("stringnull");
-                GameError.displayGameError("Error loading level!");
                 return;
             }
             List<String> lines = new ArrayList<>(Arrays.asList(string.split(Pattern.quote("$"))));
-            lines.forEach(System.out::println);
             LevelLoader.loadLevel(lines);
         } catch (Exception e) {
-            System.out.println("exception caught in loadlevel");
             e.printStackTrace();
         }
     }
@@ -74,7 +66,7 @@ public class LevelLoader {
         try {
 
             StringBuilder stringBuilder = new StringBuilder();
-            String line = null;
+            String line;
 
             try {
                 try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, charset))) {
@@ -88,7 +80,6 @@ public class LevelLoader {
 
             return stringBuilder.toString();
         } catch (Exception e) {
-            System.out.println("exception in convert");
             e.printStackTrace();
         }
         return null;

@@ -12,12 +12,11 @@ import processing.core.PApplet;
 import processing.event.KeyEvent;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.net.URL;
+import java.util.*;
 
 public class BlockPuzzle extends PApplet {
 
@@ -29,6 +28,8 @@ public class BlockPuzzle extends PApplet {
         instance = this;
     }
 
+
+    private boolean drawInit = true;
     @Getter @Setter
     private MenuState menuState;
 
@@ -41,8 +42,7 @@ public class BlockPuzzle extends PApplet {
     public void settings() {
         this.menuState = MenuState.MAIN.init();
         this.levels = new ArrayList<>();
-        System.out.println(this.getClass().getClassLoader().getResourceAsStream("levels/1.txt"));
-        LevelLoader.loadLevel(this.getClass().getClassLoader().getResourceAsStream("levels/1.txt"));
+        LevelLoader.loadLevel(this.getClass().getClassLoader().getResourceAsStream("levels/1.level"));
         this.size(640,640);
     }
 
@@ -51,12 +51,16 @@ public class BlockPuzzle extends PApplet {
             GameError.drawError();
             return;
         }
+        if (drawInit) {
+            this.menuState.getMenu().drawInit();
+            this.drawInit = false;
+        }
         this.menuState.getMenu().drawMenu();
     }
 
     public void switchMenu(MenuState menuState) {
         this.menuState = menuState;
-        this.menuState.getMenu().drawInit();
+        this.drawInit = true;
     }
 
     private final Map<String, BufferedImage> storedImages = new HashMap<>();
@@ -69,9 +73,28 @@ public class BlockPuzzle extends PApplet {
                 return image;
             } catch (IOException e) {
                 GameError.displayGameError("Fatal error: Error loading resource image, restart your game.");
+                throw new RuntimeException(e);
             }
         } else return this.storedImages.get(name);
-        throw new IllegalStateException("Illegal state reached");
+    }
+
+    public void playSound(String name) {
+        try {
+            Clip clip = AudioSystem.getClip();
+            clip.open(this.getAudioFile(name));
+            clip.start();
+        } catch (LineUnavailableException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private AudioInputStream getAudioFile(String name) {
+        try {
+            return AudioSystem.getAudioInputStream(this.getClass().getClassLoader().getResourceAsStream("sound/" + name + ".wav"));
+        } catch (UnsupportedAudioFileException | IOException e) {
+            GameError.displayGameError("Error: Could not load audio file: " + name);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

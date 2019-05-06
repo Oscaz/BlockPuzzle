@@ -15,11 +15,11 @@ public enum Direction {
         this.yChange = yChange;
     }
 
-    public int returnX(int x) {
+    public int xChanged(int x) {
         return x + this.xChange;
     }
 
-    public int returnY(int y) {
+    public int yChanged(int y) {
         return y + this.yChange;
     }
 

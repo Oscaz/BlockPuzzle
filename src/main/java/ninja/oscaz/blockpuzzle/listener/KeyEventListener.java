@@ -1,7 +1,9 @@
 package ninja.oscaz.blockpuzzle.listener;
 
 import lombok.Getter;
+import ninja.oscaz.blockpuzzle.BlockPuzzle;
 import ninja.oscaz.blockpuzzle.input.key.KeyHandler;
+import processing.core.PApplet;
 import processing.event.KeyEvent;
 
 import java.util.ArrayList;
@@ -15,15 +17,25 @@ public class KeyEventListener {
     private List<Character> pressedKeys = new ArrayList<>();
 
     public void fireKey(KeyEvent event) {
-        if (this.pressedKeys.contains(event.getKey())) return;
-        KeyHandler.getInstance().callKey(event.getKey());
-        this.pressedKeys.add(event.getKey());
+        char key = event.getKey() == PApplet.CODED ? this.getCodedKey(event.getKeyCode()) : event.getKey();
+        if (this.pressedKeys.contains(key)) return;
+        KeyHandler.getInstance().callKey(key);
+        this.pressedKeys.add(key);
     }
 
     public void endKey(KeyEvent event) {
-        if (this.pressedKeys.contains(event.getKey())) {
-            this.pressedKeys.remove((Character) event.getKey());
+        char key = event.getKey() == PApplet.CODED ? this.getCodedKey(event.getKeyCode()) : event.getKey();
+        if (this.pressedKeys.contains(key)) {
+            this.pressedKeys.remove((Character) key);
         }
+    }
+
+    private Character getCodedKey(int keyCode) {
+        if (keyCode == PApplet.UP) return '↑';
+        if (keyCode == PApplet.DOWN) return '↓';
+        if (keyCode == PApplet.LEFT) return '←';
+        if (keyCode == PApplet.RIGHT) return '→';
+        return '↺';
     }
 
 }
