@@ -9,6 +9,7 @@ import ninja.oscaz.blockpuzzle.listener.ClickEventListener;
 import ninja.oscaz.blockpuzzle.listener.KeyEventListener;
 import ninja.oscaz.blockpuzzle.menu.MenuState;
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.event.KeyEvent;
 
 import javax.imageio.ImageIO;
@@ -27,7 +28,6 @@ public class BlockPuzzle extends PApplet {
     public BlockPuzzle() {
         instance = this;
     }
-
 
     private boolean drawInit = true;
     @Getter @Setter
@@ -59,6 +59,7 @@ public class BlockPuzzle extends PApplet {
     }
 
     public void switchMenu(MenuState menuState) {
+        this.menuState.getMenu().drawKill();
         this.menuState = menuState;
         this.drawInit = true;
     }
@@ -72,7 +73,7 @@ public class BlockPuzzle extends PApplet {
                 this.storedImages.put(name, image);
                 return image;
             } catch (IOException e) {
-                GameError.displayGameError("Fatal error: Error loading resource image, restart your game.");
+                GameError.displayGameError("Fatal error: Error loading resource image, restart your logic.");
                 throw new RuntimeException(e);
             }
         } else return this.storedImages.get(name);

@@ -19,7 +19,7 @@ public class LevelLoader {
 
     public static void loadLevel(File file) {
         try {
-            loadLevel(Files.readAllLines(Paths.get(file.getPath())));
+            loadLevel(new FileInputStream(file));
         } catch (IOException e) {
             GameError.displayGameError("Error loading level!");
         }

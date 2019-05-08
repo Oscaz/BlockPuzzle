@@ -9,7 +9,8 @@ public enum MenuState {
     INGAME(GameMenu.class),
     EDITOR(EditorMenu.class),
     LEVELSELECT(LevelSelectMenu.class),
-    EDITORSELECT(EditorSelectMenu.class);
+    EDITORSELECT(EditorSelectMenu.class),
+    LEVELCOMPLETE(LevelCompleteMenu.class);
 
     @Getter @Setter private Menu menu;
     @Getter private Class<? extends Menu> menuClass;

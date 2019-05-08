@@ -1,8 +1,8 @@
 package ninja.oscaz.blockpuzzle.menu;
 
 import ninja.oscaz.blockpuzzle.BlockPuzzle;
-import ninja.oscaz.blockpuzzle.error.GameError;
 import ninja.oscaz.blockpuzzle.input.click.ClickHandler;
+import processing.core.PConstants;
 import processing.core.PImage;
 
 public class MainMenu extends Menu {
@@ -12,7 +12,7 @@ public class MainMenu extends Menu {
     }
 
     @Override
-    public void init() {
+    public void drawInit() {
         try {
             ClickHandler.getInstance().registerListener(
                     this.getMenuState(), 80, 400, 280, 500, this.getClass().getMethod("selectButtonClicked")
@@ -23,11 +23,19 @@ public class MainMenu extends Menu {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
+        BlockPuzzle.getInstance().textAlign(PConstants.CENTER, PConstants.CENTER);
+        BlockPuzzle.getInstance().textSize(20);
+        BlockPuzzle.getInstance().fill(50);
+    }
+
+    @Override
+    public void drawKill() {
+        ClickHandler.getInstance().deregisterListener(this.getMenuState());
     }
 
     @Override
     public void drawMenu() {
-        BlockPuzzle.getInstance().background(210.0f);
+        BlockPuzzle.getInstance().background(100f);
         BlockPuzzle.getInstance().image(
                 new PImage(BlockPuzzle.getInstance().getResourceImage("MainLogo")), 120, 120, 400, 33
         );

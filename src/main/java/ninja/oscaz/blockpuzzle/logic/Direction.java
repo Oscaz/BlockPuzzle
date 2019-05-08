@@ -1,4 +1,4 @@
-package ninja.oscaz.blockpuzzle.game;
+package ninja.oscaz.blockpuzzle.logic;
 
 public enum Direction {
 

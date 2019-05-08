@@ -41,11 +41,13 @@ public class KeyHandler {
     }
 
     public void deregisterListener(MenuState menuState) {
+        List<KeyListener> toRemove = new ArrayList<>();
         this.registeredListeners.forEach(listener -> {
             if (listener.getMenuState() == menuState) {
-                registeredListeners.remove(listener);
+                toRemove.add(listener);
             }
         });
+        toRemove.forEach(this.registeredListeners::remove);
     }
 
     public void deregisterListener(KeyListener keyListener) {
@@ -53,16 +55,20 @@ public class KeyHandler {
     }
 
     public void callKey(Character keyPressed) {
+        List<KeyListener> toInvoke = new ArrayList<>();
         this.registeredListeners.forEach(listener -> {
             if (!(BlockPuzzle.getInstance().getMenuState() == listener.getMenuState())) return;
             if (!(listener.getListeningCharacters().contains(keyPressed))) return;
+            toInvoke.add(listener);
+        });
+        toInvoke.forEach(listener -> {
             try {
                 if (listener.getMethod().getParameterCount() > 0) {
                     listener.getMethod().invoke(listener.getMenuState().getMenu(), keyPressed);
                 } else {
                     listener.getMethod().invoke(listener.getMenuState().getMenu());
                 }
-            } catch (IllegalAccessException | InvocationTargetException e) {
+            } catch (ReflectiveOperationException e) {
                 throw new RuntimeException(e);
             }
         });

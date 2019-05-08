@@ -17,7 +17,7 @@ public class GameError {
     }
 
     public static void drawError() {
-        displayErrorBox(queuedErrors.poll());
+        displayErrorBox(queuedErrors.peek());
     }
 
     public static void mouseReleased() {
@@ -25,6 +25,7 @@ public class GameError {
         if (!(BlockPuzzle.getInstance().mouseX <= 340)) return;
         if (!(BlockPuzzle.getInstance().mouseY >= 360)) return;
         if (!(BlockPuzzle.getInstance().mouseY <= 380)) return;
+        queuedErrors.poll();
         if (!(queuedErrors.size() > 0)) BlockPuzzle.getInstance().setErrorHalt(false);
     }
 
@@ -32,6 +33,7 @@ public class GameError {
         BlockPuzzle.getInstance().fill(70.0f);
         BlockPuzzle.getInstance().rect(240, 240, 160, 160, 5);
         BlockPuzzle.getInstance().fill(Color.WHITE.getRGB());
+        BlockPuzzle.getInstance().textSize(25);
         BlockPuzzle.getInstance().text(message, 280, 260, 100, 120);
         BlockPuzzle.getInstance().image(new PImage(BlockPuzzle.getInstance().getResourceImage("ErrorSign")), 246, 260, 32, 32);
         BlockPuzzle.getInstance().image(new PImage(BlockPuzzle.getInstance().getResourceImage("ErrorOk")), 300, 360, 40, 20);

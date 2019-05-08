@@ -21,12 +21,16 @@ public class ClickHandler {
     }
 
     public void callClick() {
+        List<ClickListener> toInvoke = new ArrayList<>();
         this.registeredListeners.forEach(listener -> {
             if (!(BlockPuzzle.getInstance().getMenuState() == listener.getMenuState())) return;
             if (!(BlockPuzzle.getInstance().mouseX > listener.getX())) return;
             if (!(BlockPuzzle.getInstance().mouseX < listener.getXBound())) return;
             if (!(BlockPuzzle.getInstance().mouseY > listener.getY())) return;
             if (!(BlockPuzzle.getInstance().mouseY < listener.getYBound())) return;
+            toInvoke.add(listener);
+        });
+        toInvoke.forEach(listener -> {
             try {
                 if (listener.getParameter() == null) {
                     listener.getMethod().invoke(listener.getMenuState().getMenu());
@@ -49,9 +53,11 @@ public class ClickHandler {
     }
 
     public void deregisterListener(MenuState menuState) {
+        List<ClickListener> toRemove = new ArrayList<>();
         this.registeredListeners.forEach(listener -> {
-            if (listener.getMenuState() == menuState) registeredListeners.remove(listener);
+            if (listener.getMenuState() == menuState) toRemove.add(listener);
         });
+        toRemove.forEach(this.registeredListeners::remove);
     }
 
     public void deregisterListener(MenuState menuState, int x, int y, int xBound, int yBound, Method method) {
