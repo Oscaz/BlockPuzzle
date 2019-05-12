@@ -10,6 +10,7 @@ public enum MenuState {
     EDITOR(EditorMenu.class),
     LEVELSELECT(LevelSelectMenu.class),
     EDITORSELECT(EditorSelectMenu.class),
+    EDITORNAME(EditorNameMenu.class),
     LEVELCOMPLETE(LevelCompleteMenu.class);
 
     @Getter @Setter private Menu menu;

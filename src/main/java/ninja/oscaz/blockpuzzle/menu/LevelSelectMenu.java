@@ -2,11 +2,14 @@ package ninja.oscaz.blockpuzzle.menu;
 
 import ninja.oscaz.blockpuzzle.BlockPuzzle;
 import ninja.oscaz.blockpuzzle.error.GameError;
+import ninja.oscaz.blockpuzzle.file.FileChooser;
 import ninja.oscaz.blockpuzzle.input.click.ClickHandler;
 import ninja.oscaz.blockpuzzle.input.click.ClickListener;
 import ninja.oscaz.blockpuzzle.input.key.KeyHandler;
 import ninja.oscaz.blockpuzzle.level.GameLevel;
 import ninja.oscaz.blockpuzzle.level.Level;
+import ninja.oscaz.blockpuzzle.level.LevelLoader;
+import processing.core.PImage;
 
 import java.awt.*;
 
@@ -21,6 +24,9 @@ public class LevelSelectMenu extends Menu {
         try {
             KeyHandler.getInstance().registerListener(
                     this.getMenuState(), 'b', this.getClass().getMethod("switchMainMenu")
+            );
+            ClickHandler.getInstance().registerListener(
+                    this.getMenuState(), 440, 520, 600, 600, this.getClass().getMethod("loadLevel")
             );
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -47,7 +53,7 @@ public class LevelSelectMenu extends Menu {
             clickListener.setParameter(new GameLevel(level));
             ClickHandler.getInstance().registerListener(clickListener);
             x++;
-            if (x == 4) {
+                if (x == 4) {
                 y++;
                 x = 0;
             }
@@ -62,6 +68,7 @@ public class LevelSelectMenu extends Menu {
     @Override
     public void drawMenu() {
         BlockPuzzle.getInstance().background(100f);
+        BlockPuzzle.getInstance().image(new PImage(BlockPuzzle.getInstance().getResourceImage("Load")), 440, 520);
         int x = 0, y = 0;
         for (Level level : BlockPuzzle.getInstance().getLevels()) {
             BlockPuzzle.getInstance().fill(Color.LIGHT_GRAY.getRGB());
@@ -85,5 +92,11 @@ public class LevelSelectMenu extends Menu {
         GameMenu gameMenu = (GameMenu) MenuState.INGAME.getMenu();
         gameMenu.setCurrentLevel(level);
         BlockPuzzle.getInstance().switchMenu(MenuState.INGAME);
+    }
+
+    public void loadLevel() {
+        LevelLoader.loadLevel(FileChooser.chooseFile());
+        this.drawKill();
+        this.drawInit();
     }
 }

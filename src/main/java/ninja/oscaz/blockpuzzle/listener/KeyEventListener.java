@@ -35,6 +35,8 @@ public class KeyEventListener {
         if (keyCode == PApplet.DOWN) return '↓';
         if (keyCode == PApplet.LEFT) return '←';
         if (keyCode == PApplet.RIGHT) return '→';
+        if (keyCode == PApplet.BACKSPACE) return '⇐';
+        if (keyCode == PApplet.ENTER) return '⇒';
         return '↺';
     }
 

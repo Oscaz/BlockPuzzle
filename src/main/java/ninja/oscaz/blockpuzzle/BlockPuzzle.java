@@ -16,7 +16,6 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 
 public class BlockPuzzle extends PApplet {

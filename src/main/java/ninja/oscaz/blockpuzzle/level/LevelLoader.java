@@ -7,15 +7,26 @@ import ninja.oscaz.blockpuzzle.error.GameError;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
 public class LevelLoader {
+
+    public static Level returnLevel(File file) {
+        try {
+            InputStream inputStream = new FileInputStream(file);
+            String string = LevelLoader.convert(inputStream, Charset.defaultCharset());
+            if (string == null) {
+                return null;
+            }
+            List<String> lines = new ArrayList<>(Arrays.asList(string.split(Pattern.quote("$"))));
+            return returnLevel(lines);
+        } catch (IOException e) {
+            return null;
+        }
+    }
 
     public static void loadLevel(File file) {
         try {
@@ -25,7 +36,7 @@ public class LevelLoader {
         }
     }
 
-    public static void loadLevel(List<String> lines) {
+    private static Level returnLevel(List<String> lines) {
         String name = lines.get(0);
         lines.remove(0);
         List<Block> blocks = new ArrayList<>();
@@ -46,20 +57,17 @@ public class LevelLoader {
                 e.printStackTrace();
             }
         });
-        BlockPuzzle.getInstance().getLevels().add(new Level(name, blocks));
+        return new Level(name, blocks);
+    }
+
+    public static void loadLevel(List<String> lines) {
+        BlockPuzzle.getInstance().getLevels().add(returnLevel(lines));
     }
 
     public static void loadLevel(InputStream inputStream) {
-        try {
-            String string = LevelLoader.convert(inputStream, Charset.defaultCharset());
-            if (string == null) {
-                return;
-            }
-            List<String> lines = new ArrayList<>(Arrays.asList(string.split(Pattern.quote("$"))));
-            LevelLoader.loadLevel(lines);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        List<String> lines = new ArrayList<>();
+        lines.addAll(Arrays.asList(convert(inputStream, Charset.defaultCharset()).split(Pattern.quote("$"))));
+        loadLevel(lines);
     }
 
     private static String convert(InputStream inputStream, Charset charset) {

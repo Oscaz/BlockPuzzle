@@ -31,6 +31,7 @@ public class GameLevel {
             if (block.getBlockType() == BlockType.SPAWN) {
                 this.playerX = block.getX();
                 this.playerY = block.getY();
+                this.setBlock(block, BlockType.EMPTY);
             }
         });
     }
@@ -67,7 +68,6 @@ public class GameLevel {
         }
         Block block = this.getBlock(changedX, changedY);
         if (block.getBlockType() == BlockType.EMPTY ||
-            block.getBlockType() == BlockType.SPAWN ||
             block.getBlockType() == BlockType.GLASS ||
             block.getBlockType() == BlockType.PLANKS) {
             this.playerX = changedX;
@@ -94,8 +94,7 @@ public class GameLevel {
         }
         if (block.getBlockType() == BlockType.MOVABLE) {
             Block movableBlockPath = this.getBlock(direction.xChanged(changedX), direction.yChanged(changedY));
-            if (movableBlockPath.getBlockType() == BlockType.EMPTY ||
-                movableBlockPath.getBlockType() == BlockType.SPAWN) {
+            if (movableBlockPath.getBlockType() == BlockType.EMPTY) {
                 this.setBlock(block, BlockType.EMPTY);
                 this.setBlock(movableBlockPath, BlockType.MOVABLE);
                 this.playerX = changedX;
@@ -115,7 +114,6 @@ public class GameLevel {
         int changedX = direction.xChanged(x), changedY = direction.yChanged(y);
         if (changedX < 0 || changedX > 9 || changedY < 0 || changedY > 9) return false;
         Block block = this.getBlock(changedX, changedY);
-        if (block.getBlockType() == BlockType.SPAWN) return true;
         if (block.getBlockType() == BlockType.EMPTY) return true;
         if (block.getBlockType() == BlockType.ORANGE_PORTAL) return true;
         if (block.getBlockType() == BlockType.BLUE_PORTAL) return true;
@@ -129,7 +127,6 @@ public class GameLevel {
             Block movableBlockPath = this.getBlock(pathX, pathY);
             if (movableBlockPath.getBlockType() == BlockType.EMPTY) return true;
             if (movableBlockPath.getBlockType() == BlockType.GOAL) return true;
-            if (movableBlockPath.getBlockType() == BlockType.SPAWN) return true;
         }
         return false;
     }

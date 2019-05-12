@@ -14,9 +14,7 @@ public class FileChooser {
         if (osName.equals("Mac OS X")) {
             System.setProperty("apple.awt.fileDialogForDirectories", "false");
             FileDialog fd = new FileDialog(new Frame(), "Choose a file", FileDialog.LOAD);
-            fd.setFilenameFilter((dir, name) -> {
-                return name.endsWith(".level");
-            });
+            fd.setFilenameFilter((dir, name) -> name.endsWith(".level"));
             fd.setDirectory(homeDir);
             fd.setVisible(true);
             String filename = fd.getDirectory() + fd.getFile();
