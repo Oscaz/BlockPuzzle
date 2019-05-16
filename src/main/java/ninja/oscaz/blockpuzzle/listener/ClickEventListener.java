@@ -1,8 +1,8 @@
 package ninja.oscaz.blockpuzzle.listener;
 
 import lombok.Getter;
+import ninja.oscaz.blockpuzzle.BlockPuzzle;
 import ninja.oscaz.blockpuzzle.input.click.ClickHandler;
-import ninja.oscaz.blockpuzzle.input.click.ClickListener;
 
 @Getter
 public class ClickEventListener {

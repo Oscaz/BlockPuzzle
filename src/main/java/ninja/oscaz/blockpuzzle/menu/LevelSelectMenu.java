@@ -21,6 +21,15 @@ public class LevelSelectMenu extends Menu {
 
     @Override
     public void init() {
+
+    }
+
+    @Override
+    public void drawInit() {
+        if (BlockPuzzle.getInstance().getLevels().size() == 0) {
+            GameError.displayGameError("No existing levels!");
+            return;
+        }
         try {
             KeyHandler.getInstance().registerListener(
                     this.getMenuState(), 'b', this.getClass().getMethod("switchMainMenu")
@@ -31,20 +40,12 @@ public class LevelSelectMenu extends Menu {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void drawInit() {
-        if (BlockPuzzle.getInstance().getLevels().size() == 0) {
-            GameError.displayGameError("No existing levels!");
-            return;
-        }
         int x = 0, y = 0;
         for (Level level : BlockPuzzle.getInstance().getLevels()) {
             ClickListener clickListener;
             try {
                 clickListener = new ClickListener(
-                        MenuState.LEVELSELECT, 40 + (x * 160), 40 + (y * 160), 160 + (x * 160), 160 + (y * 160),
+                        MenuState.LEVELSELECT, 20 + (x * 160), 20 + (y * 80), 160 + (x * 160), 80 + (y * 80),
                         this.getClass().getMethod("selectLevel", GameLevel.class)
                 );
             } catch (NoSuchMethodException e) {
@@ -72,10 +73,10 @@ public class LevelSelectMenu extends Menu {
         int x = 0, y = 0;
         for (Level level : BlockPuzzle.getInstance().getLevels()) {
             BlockPuzzle.getInstance().fill(Color.LIGHT_GRAY.getRGB());
-            BlockPuzzle.getInstance().rect(40 + (x * 160), 40 + (y * 160), 120, 60, 5);
+            BlockPuzzle.getInstance().rect(20 + (x * 160), 20 + (y * 80), 120, 60, 5);
             BlockPuzzle.getInstance().fill(Color.BLACK.getRGB());
             BlockPuzzle.getInstance().textSize(20);
-            BlockPuzzle.getInstance().text(level.getName(), 40 + (x * 160) + 10, 40 + (y * 160) + 10, 100, 40);
+            BlockPuzzle.getInstance().text(level.getName(), 20 + (x * 160) + 10, 20 + (y * 80) + 10, 100, 40);
             x++;
             if (x == 4) {
                 y++;

@@ -57,10 +57,37 @@ public class EditorMenu extends Menu {
                 }
             }
         }
-        for (int x = 0; x < this.editableBlockTypes.size(); x++) {
+        try {
+            int x = 0, y = 0;
+            for (BlockType blockType : this.editableBlockTypes) {
+                ClickListener clickListener = new ClickListener(
+                        this.getMenuState(), 48 * x, (480 + (y * 48)), (48 * x) + 48, (528 + (y * 48)),
+                        this.getClass().getMethod("blockTypeClicked", BlockType.class)
+                );
+                clickListener.setParameter(blockType);
+                ClickHandler.getInstance().registerListener(clickListener);
+                x++;
+                if (x == 10) {
+                    x = 0;
+                    y++;
+                }
+            }
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        /*
+        int x = 0, y = 0;
+        for (BlockType blockType : this.editableBlockTypes) {
+            System.out.println("blocktype: " + blockType);
+            System.out.println("x: " + x);
+            System.out.println("y: " + y);
+            System.out.println("xstart: " + 48 * x);
+            System.out.println("ystart: " + (480+(y*48)));
+            System.out.println("xbound: " + (48*x + 48));
+            System.out.println("ybound: " + (528+ (y*48)));
             try {
                 ClickListener clickListener = new ClickListener(
-                        this.getMenuState(), 48 * x, 480, 48 * x + 48, 528,
+                        this.getMenuState(), 48 * x, 480 + (y * 48), 48 * x + 48, 528 + (y * 48),
                         this.getClass().getMethod("blockTypeClicked", BlockType.class)
                 );
                 clickListener.setParameter(this.editableBlockTypes.get(x));
@@ -68,13 +95,18 @@ public class EditorMenu extends Menu {
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             }
-        }
+            x++;
+            if (x == 10) {
+                x = 0;
+                y++;
+            }
+        }*/
         try {
-            KeyHandler.getInstance().registerListener(
-                    this.getMenuState(), 's', this.getClass().getMethod("saveFile")
-            );
             ClickHandler.getInstance().registerListener(
                     this.getMenuState(), 480, 0, 640, 80, this.getClass().getMethod("switchMainMenu")
+            );
+            ClickHandler.getInstance().registerListener(
+                    this.getMenuState(), 480, 100, 640, 180, this.getClass().getMethod("saveFile")
             );
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -96,11 +128,18 @@ public class EditorMenu extends Menu {
         BlockPuzzle.getInstance().background(100f);
         BlockPuzzle.getInstance().rect(0,0,480, 480);
         BlockPuzzle.getInstance().image(new PImage(BlockPuzzle.getInstance().getResourceImage("Back")), 480, 0);
+        BlockPuzzle.getInstance().image(new PImage(BlockPuzzle.getInstance().getResourceImage("Save")), 480, 100);
         this.level.getBlocks().forEach(
                 block -> BlockPuzzle.getInstance().image(new PImage(block.getBlockType().getImage()), block.getX() * 48, block.getY() * 48, 48, 48)
         );
-        for (int x = 0; x < this.editableBlockTypes.size(); x++) {
-            BlockPuzzle.getInstance().image(new PImage(this.editableBlockTypes.get(x).getImage()), 48 * x,480);
+        int x = 0, y = 0;
+        for (BlockType blockType : this.editableBlockTypes) {
+            BlockPuzzle.getInstance().image(new PImage(blockType.getImage()), 48 * x,480 + (y * 48));
+            x++;
+            if (x == 10) {
+                x = 0;
+                y++;
+            }
         }
         this.redrawMenu = false;
     }

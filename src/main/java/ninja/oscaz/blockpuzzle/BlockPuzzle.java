@@ -41,7 +41,17 @@ public class BlockPuzzle extends PApplet {
     public void settings() {
         this.menuState = MenuState.MAIN.init();
         this.levels = new ArrayList<>();
-        LevelLoader.loadLevel(this.getClass().getClassLoader().getResourceAsStream("levels/1.level"));
+        Arrays.asList("levels/Level1.level",
+                      "levels/Level2.level",
+                      "levels/Level3.level",
+                      "levels/Level4.level",
+                      "levels/Level5.level",
+                      "levels/Level6.level",
+                      "levels/Level7.level",
+                      "levels/Level8.level",
+                      "levels/Level9.level",
+                      "levels/Level10.level")
+                .forEach(levelString -> LevelLoader.loadLevel(this.getClass().getClassLoader().getResourceAsStream(levelString)));
         this.size(640,640);
     }
 
@@ -78,14 +88,16 @@ public class BlockPuzzle extends PApplet {
         } else return this.storedImages.get(name);
     }
 
-    public void playSound(String name) {
-        try {
-            Clip clip = AudioSystem.getClip();
-            clip.open(this.getAudioFile(name));
-            clip.start();
-        } catch (LineUnavailableException | IOException e) {
-            e.printStackTrace();
-        }
+    public synchronized void playSound(final String name) {
+        new Thread(() -> {
+            try {
+                Clip clip = AudioSystem.getClip();
+                clip.open(this.getAudioFile(name));
+                clip.start();
+            } catch (LineUnavailableException | IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     private AudioInputStream getAudioFile(String name) {

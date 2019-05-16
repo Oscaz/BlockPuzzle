@@ -20,6 +20,14 @@ public enum BlockType {
     PLANKS(BlockPuzzle.getInstance().getResourceImage("block/Planks"), true),
     KEY(BlockPuzzle.getInstance().getResourceImage("block/Key"), true),
     DOOR(BlockPuzzle.getInstance().getResourceImage("block/Door"), true),
+    UP_ARROW(BlockPuzzle.getInstance().getResourceImage("block/UpArrow"), true),
+    DOWN_ARROW(BlockPuzzle.getInstance().getResourceImage("block/DownArrow"), true),
+    RIGHT_ARROW(BlockPuzzle.getInstance().getResourceImage("block/RightArrow"), true),
+    LEFT_ARROW(BlockPuzzle.getInstance().getResourceImage("block/LeftArrow"), true),
+    UP_SPEED(BlockPuzzle.getInstance().getResourceImage("block/UpSpeed"), true),
+    DOWN_SPEED(BlockPuzzle.getInstance().getResourceImage("block/DownSpeed"), true),
+    RIGHT_SPEED(BlockPuzzle.getInstance().getResourceImage("block/RightSpeed"), true),
+    LEFT_SPEED(BlockPuzzle.getInstance().getResourceImage("block/LeftSpeed"), true),
     REMOVE(BlockPuzzle.getInstance().getResourceImage("block/Remove"), true);
 
     @Getter private final BufferedImage image;

@@ -67,11 +67,23 @@ public class GameLevel {
             this.setBlock(this.playerX, this.playerY, BlockType.GLASS_BROKEN);
         }
         Block block = this.getBlock(changedX, changedY);
-        if (block.getBlockType() == BlockType.EMPTY ||
-            block.getBlockType() == BlockType.GLASS ||
-            block.getBlockType() == BlockType.PLANKS) {
+        if (block.getBlockType() == BlockType.EMPTY      ||
+            block.getBlockType() == BlockType.GLASS      ||
+            block.getBlockType() == BlockType.PLANKS     ||
+            block.getBlockType() == BlockType.UP_ARROW   ||
+            block.getBlockType() == BlockType.DOWN_ARROW ||
+            block.getBlockType() == BlockType.LEFT_ARROW ||
+            block.getBlockType() == BlockType.RIGHT_ARROW) {
             this.playerX = changedX;
             this.playerY = changedY;
+        }
+        if (block.getBlockType() == BlockType.UP_SPEED   ||
+            block.getBlockType() == BlockType.DOWN_SPEED ||
+            block.getBlockType() == BlockType.LEFT_SPEED ||
+            block.getBlockType() == BlockType.RIGHT_SPEED) {
+            this.playerX = changedX;
+            this.playerY = changedY;
+            this.executeSpeed();
         }
         if (block.getBlockType() == BlockType.KEY) {
             this.keys++;
@@ -120,7 +132,15 @@ public class GameLevel {
         if (block.getBlockType() == BlockType.GLASS) return true;
         if (block.getBlockType() == BlockType.PLANKS) return true;
         if (block.getBlockType() == BlockType.KEY) return true;
+        if (block.getBlockType() == BlockType.UP_SPEED) return true;
+        if (block.getBlockType() == BlockType.DOWN_SPEED) return true;
+        if (block.getBlockType() == BlockType.LEFT_SPEED) return true;
+        if (block.getBlockType() == BlockType.RIGHT_SPEED) return true;
         if (block.getBlockType() == BlockType.DOOR && this.keys > 0) return true;
+        if (block.getBlockType() == BlockType.UP_ARROW && direction == Direction.UP) return true;
+        if (block.getBlockType() == BlockType.DOWN_ARROW && direction == Direction.DOWN) return true;
+        if (block.getBlockType() == BlockType.RIGHT_ARROW && direction == Direction.RIGHT) return true;
+        if (block.getBlockType() == BlockType.LEFT_ARROW && direction == Direction.LEFT) return true;
         if (block.getBlockType() == BlockType.MOVABLE) {
             int pathX = direction.xChanged(changedX), pathY = direction.yChanged(changedY);
             if (pathX < 0 || pathX > 9 || pathY < 0 || pathY > 9) return false;
@@ -129,6 +149,37 @@ public class GameLevel {
             if (movableBlockPath.getBlockType() == BlockType.GOAL) return true;
         }
         return false;
+    }
+
+    private void executeSpeed() {
+        Direction direction = Direction.UP;
+        Block speed = this.getBlock(playerX, playerY);
+        if (speed.getBlockType() == BlockType.DOWN_SPEED) direction = Direction.DOWN;
+        if (speed.getBlockType() == BlockType.LEFT_SPEED) direction = Direction.LEFT;
+        if (speed.getBlockType() == BlockType.RIGHT_SPEED) direction = Direction.RIGHT;
+        while (true) {
+            int editedX = direction.xChanged(this.playerX), editedY = direction.yChanged(this.playerY);
+            if (editedX == -1 || editedY == -1) break;
+            if (editedX == 10 || editedY == 10) break;
+            Block block = this.getBlock(editedX, editedY);
+            if (block.getBlockType() == BlockType.UP_SPEED   ||
+                block.getBlockType() == BlockType.DOWN_SPEED ||
+                block.getBlockType() == BlockType.LEFT_SPEED ||
+                block.getBlockType() == BlockType.RIGHT_SPEED) {
+                this.playerX = editedX;
+                this.playerY = editedY;
+                try {
+                    this.executeSpeed();
+                } catch (StackOverflowError e) {
+                    // ignored xd
+                    return;
+                }
+                return;
+            }
+            if (block.getBlockType() != BlockType.EMPTY) break;
+            this.playerX = editedX;
+            this.playerY = editedY;
+        }
     }
 
     public boolean isGameOver() {
