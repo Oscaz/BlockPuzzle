@@ -89,7 +89,8 @@ public class BlockPuzzle extends PApplet {
     }
 
     public synchronized void playSound(final String name) {
-        new Thread(() -> {
+        // DISABLED -- WINDOWS CRASHEY
+        /*new Thread(() -> {
             try {
                 Clip clip = AudioSystem.getClip();
                 clip.open(this.getAudioFile(name));
@@ -97,7 +98,7 @@ public class BlockPuzzle extends PApplet {
             } catch (LineUnavailableException | IOException e) {
                 e.printStackTrace();
             }
-        }).start();
+        }).start();*/
     }
 
     private AudioInputStream getAudioFile(String name) {
