@@ -25,8 +25,8 @@ public class EditorSelectMenu extends Menu {
             ClickHandler.getInstance().registerListener(
                     this.getMenuState(), 380, 270, 560, 370, this.getClass().getMethod("newLevel")
             );
-            KeyHandler.getInstance().registerListener(
-                    this.getMenuState(), 'b', this.getClass().getMethod("switchMainMenu")
+            ClickHandler.getInstance().registerListener(
+                    this.getMenuState(), 240, 370, 380, 450, this.getClass().getMethod("switchMainMenu")
             );
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
@@ -43,6 +43,7 @@ public class EditorSelectMenu extends Menu {
         BlockPuzzle.getInstance().background(100f);
         BlockPuzzle.getInstance().image(new PImage(BlockPuzzle.getInstance().getResourceImage("Load")), 100, 270);
         BlockPuzzle.getInstance().image(new PImage(BlockPuzzle.getInstance().getResourceImage("New")), 380, 270);
+        BlockPuzzle.getInstance().image(new PImage(BlockPuzzle.getInstance().getResourceImage("Back")), 240,370);
     }
 
     public void loadLevel() {

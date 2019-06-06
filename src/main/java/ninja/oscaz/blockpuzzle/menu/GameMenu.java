@@ -45,14 +45,14 @@ public class GameMenu extends Menu {
         KeyHandler.getInstance().deregisterListener(MenuState.INGAME);
     }
 
-    private boolean doRedraw = true;
+    @Setter private boolean doRedraw = true;
 
     @Override
     public void drawMenu() {
         if (doRedraw) this.redrawGame();
     }
 
-    private void redrawGame() {
+    public void redrawGame() {
         BlockPuzzle.getInstance().background(150f);
         BlockPuzzle.getInstance().fill(100.0f);
         BlockPuzzle.getInstance().noStroke();

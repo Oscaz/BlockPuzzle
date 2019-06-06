@@ -9,7 +9,6 @@ import ninja.oscaz.blockpuzzle.listener.ClickEventListener;
 import ninja.oscaz.blockpuzzle.listener.KeyEventListener;
 import ninja.oscaz.blockpuzzle.menu.MenuState;
 import processing.core.PApplet;
-import processing.core.PConstants;
 import processing.event.KeyEvent;
 
 import javax.imageio.ImageIO;
@@ -38,6 +37,7 @@ public class BlockPuzzle extends PApplet {
     @Getter @Setter
     private boolean errorHalt = false;
 
+    @Override
     public void settings() {
         this.menuState = MenuState.MAIN.init();
         this.levels = new ArrayList<>();
@@ -55,6 +55,12 @@ public class BlockPuzzle extends PApplet {
         this.size(640,640);
     }
 
+    @Override
+    public void setup() {
+        this.surface.setIcon(loadImage("Player.png"));
+    }
+
+    @Override
     public void draw() {
         if (errorHalt) {
             GameError.drawError();

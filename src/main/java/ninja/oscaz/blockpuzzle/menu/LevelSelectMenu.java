@@ -31,8 +31,8 @@ public class LevelSelectMenu extends Menu {
             return;
         }
         try {
-            KeyHandler.getInstance().registerListener(
-                    this.getMenuState(), 'b', this.getClass().getMethod("switchMainMenu")
+            ClickHandler.getInstance().registerListener(
+                    this.getMenuState(), 260, 520, 420, 600, this.getClass().getMethod("switchMainMenu")
             );
             ClickHandler.getInstance().registerListener(
                     this.getMenuState(), 440, 520, 600, 600, this.getClass().getMethod("loadLevel")
@@ -69,6 +69,7 @@ public class LevelSelectMenu extends Menu {
     @Override
     public void drawMenu() {
         BlockPuzzle.getInstance().background(100f);
+        BlockPuzzle.getInstance().image(new PImage(BlockPuzzle.getInstance().getResourceImage("Back")), 260, 520);
         BlockPuzzle.getInstance().image(new PImage(BlockPuzzle.getInstance().getResourceImage("Load")), 440, 520);
         int x = 0, y = 0;
         for (Level level : BlockPuzzle.getInstance().getLevels()) {

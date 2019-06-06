@@ -5,6 +5,8 @@ import ninja.oscaz.blockpuzzle.BlockPuzzle;
 import ninja.oscaz.blockpuzzle.block.Block;
 import ninja.oscaz.blockpuzzle.block.BlockType;
 import ninja.oscaz.blockpuzzle.logic.Direction;
+import ninja.oscaz.blockpuzzle.menu.GameMenu;
+import ninja.oscaz.blockpuzzle.menu.MenuState;
 
 import java.time.Instant;
 import java.util.ArrayList;
